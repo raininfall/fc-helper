@@ -13,4 +13,6 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile "com.alibaba:fastjson:1.2.46"
+    compile "com.auth0:java-jwt:3.3.0"
+    compile "com.auth0:jwks-rsa:0.3.0"
 }

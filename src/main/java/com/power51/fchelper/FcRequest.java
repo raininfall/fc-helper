@@ -1,5 +1,10 @@
 package com.power51.fchelper;
 
+import com.auth0.jwk.JwkProvider;
+import com.auth0.jwk.UrlJwkProvider;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Base64;
@@ -7,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FcRequest {
-    final ApiGateInput input;
+    private final ApiGateInput input;
+    private DecodedJWT jwt;
 
     public FcRequest(final ApiGateInput input) {
         this.input = input;
@@ -40,5 +46,16 @@ public class FcRequest {
             return Base64.getDecoder().decode(input.getBody().getBytes("UTF-8"));
         }
         return input.getBody().getBytes("UTF-8");
+    }
+
+    public DecodedJWT getJWT() {
+        if (null == jwt) {
+            jwt = JWT.decode(getQuery("token"));
+        }
+        return jwt;
+    }
+
+    public Long getSub() {
+        return Long.valueOf(getJWT().getSubject());
     }
 }
